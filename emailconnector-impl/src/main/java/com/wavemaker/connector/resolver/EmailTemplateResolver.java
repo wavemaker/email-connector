@@ -29,8 +29,7 @@ public class EmailTemplateResolver {
             int end = matcher.end();
             String param = templateText.substring(start, end);
             String placeholder = param.replaceAll("@", "");
-            replacedText = replacedText.replaceAll(param, placeholder);
-            replacedText = replacedText.replaceAll(placeholder, props.get(placeholder));
+            replacedText = replacedText.replaceAll(param, props.get(placeholder));
         }
         return replacedText;
 
