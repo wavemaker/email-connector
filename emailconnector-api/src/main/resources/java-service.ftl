@@ -45,7 +45,7 @@
 
      private static final Logger logger = LoggerFactory.getLogger(${className}.class);
 
-	 @Value("${email.server.username}")
+	 @Value("${r"${email.server.username}"}")
      private String fromEmailAddress;
 
      @Autowired
@@ -99,8 +99,8 @@
 
 	 //Send MIME Email.
      public void sendMimeMail(String toEmailAddress, String emailSubject, String htmlContent) {
+         logger.info("Sending email to {}, with subject {} and mimetype content", toEmailAddress, emailSubject);
          emailConnector.sendMimeMail(new MimeMessagePreparator() {
-             logger.info("Sending email to {}, with subject {} and mimetype content", toEmailAddress, emailSubject);
              @Override
              public void prepare(final MimeMessage mimeMessage) throws Exception {
                  MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
