@@ -7,6 +7,8 @@
  import org.slf4j.LoggerFactory;
 
  import org.springframework.beans.factory.annotation.Autowired;
+ 
+ import org.apache.commons.io.IOUtils;
 
  import com.wavemaker.runtime.service.annotations.ExposeToClient;
  import com.wavemaker.runtime.service.annotations.HideFromClient;
@@ -25,6 +27,8 @@
  import org.springframework.mail.javamail.MimeMessageHelper;
  import org.springframework.mail.javamail.MimeMessagePreparator;
  import org.springframework.core.io.ClassPathResource;
+ import java.io.InputStream;
+ import org.springframework.core.io.ByteArrayResource;
 
  //import ${packageName}.model.*;
 
@@ -96,8 +100,23 @@
          	}
          });
      }
+     
+     public void sendMailWithMessagePreparatorWithStream(String toEmailAddress, String emailSubject, String emailMessage, InputStream inputStream) {
+        logger.info("Sending email to {}, with subject : {}, message : {} and mimetype content", toEmailAddress, emailSubject, emailMessage);
+        emailConnector.sendMimeMail(new MimeMessagePreparator() {
+            @Override
+            public void prepare(final MimeMessage mimeMessage) throws Exception {
+                MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+                mimeMessageHelper.addTo(toEmailAddress);
+                mimeMessageHelper.setFrom(fromEmailAddress);
+                mimeMessageHelper.setSubject(emailSubject);
+                mimeMessageHelper.setText(emailMessage);
+                mimeMessageHelper.addAttachment("file", new ByteArrayResource(IOUtils.toByteArray(inputStream)));
+            }
+        });
+    }
 
-	 //Send MIME Email.
+     //Send MIME Email.
      public void sendMimeMail(String toEmailAddress, String emailSubject, String htmlContent) {
          logger.info("Sending email to {}, with subject {} and mimetype content", toEmailAddress, emailSubject);
          emailConnector.sendMimeMail(new MimeMessagePreparator() {
