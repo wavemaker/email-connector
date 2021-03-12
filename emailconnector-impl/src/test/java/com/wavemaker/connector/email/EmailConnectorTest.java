@@ -67,8 +67,8 @@ public class EmailConnectorTest {
     @Test
     public void sendMailWithSimpleMailMessage() {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom("wavemaker789@gmail.com");
-        simpleMailMessage.setTo("sunil.pulugula@wavemaker.com");
+        simpleMailMessage.setFrom("wavemaker.apps@gmail.com");
+        simpleMailMessage.setTo("saraswathi.rekhala@wavemaker.com");
         simpleMailMessage.setSubject("testing mail");
         simpleMailMessage.setText("hello world!!!");
         emailConnector.sendSimpleMailMessage(simpleMailMessage);

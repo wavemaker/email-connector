@@ -2,6 +2,8 @@ package com.wavemaker.connector.properties;
 
 import java.util.Properties;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,16 +26,21 @@ public class EmailProperties {
     @Value("${email.server.password}")
     private String password;
 
+    @Value("${email.transport.protocol}")
+    private String protocol;
+
     private Properties javaMailProperties = new Properties();
 
-    public EmailProperties() {
+    @PostConstruct
+    public Properties setProperties() {
         javaMailProperties.setProperty("mail.smtp.auth", "true");
         javaMailProperties.setProperty("mail.smtp.starttls.enable", "false");
         javaMailProperties.setProperty("mail.smtp.quitwait", "false");
         javaMailProperties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         javaMailProperties.setProperty("mail.smtp.socketFactory.fallback", "false");
         javaMailProperties.setProperty("mail.debug", "false");
-
+        javaMailProperties.setProperty("mail.transport.protocol", protocol);
+        return javaMailProperties;
     }
 
     public String getHost() {
