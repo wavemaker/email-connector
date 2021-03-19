@@ -1,4 +1,4 @@
-version: "1.0"
+version: "1.1"
 name: "email"
 description: "This connector expose apis to send various types of email"
 springConfigurationClass: "com.wavemaker.connector.configuration.EmailConnectorConfiguration"

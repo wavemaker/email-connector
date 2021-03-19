@@ -1,6 +1,7 @@
 package com.wavemaker.connector.email;
 
 import java.util.Map;
+import java.util.Properties;
 
 import javax.mail.internet.MimeMessage;
 
@@ -22,7 +23,6 @@ import com.wavemaker.connector.properties.EmailProperties;
 @Service
 @Primary
 public class EmailConnectorImpl extends AbstractEmailConnector {
-
 
     @Autowired
     private EmailProperties emailProperties;
@@ -59,7 +59,17 @@ public class EmailConnectorImpl extends AbstractEmailConnector {
         });
     }
 
-    public EmailProperties getEmailProperties() {
+    public EmailProperties getAllEmailProperties() {
         return emailProperties;
+    }
+
+    @Override
+    public void setEmailProperties(Properties properties) {
+        emailProperties.setProperties(properties);
+    }
+
+    @Override
+    public Properties getEmailProperties() {
+        return emailProperties.getProperties();
     }
 }

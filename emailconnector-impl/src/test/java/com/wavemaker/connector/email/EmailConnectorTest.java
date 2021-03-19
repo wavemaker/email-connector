@@ -3,6 +3,7 @@ package com.wavemaker.connector.email;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -28,6 +29,21 @@ public class EmailConnectorTest {
     @Autowired
     private EmailConnector emailConnector;
 
+    @Test
+    public void setEmailProperties() {
+        Properties properties = new Properties();
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+        properties.setProperty("mail.smtp.quitwait", "false");
+        properties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.setProperty("mail.smtp.socketFactory.fallback", "true");
+        properties.setProperty("mail.debug", "true");
+        properties.setProperty("mail.transport.protocol", "smtps");
+        emailConnector.setEmailProperties(properties);
+        Properties emailProperties = emailConnector.getEmailProperties();
+        System.out.println(emailProperties.getProperty("mail.transport.protocol"));
+        System.out.println(emailProperties.getProperty("mail.smtp.socketFactory.fallback"));
+    }
 
     @Test
     public void sendMimeMail() {
@@ -35,7 +51,7 @@ public class EmailConnectorTest {
             @Override
             public void prepare(final MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-                mimeMessageHelper.addTo("sunil.pulugula@wavemaker.com");
+                mimeMessageHelper.addTo("test@wavemaker.com");
                 mimeMessageHelper.setFrom("wavemaker789@gmail.com");
                 mimeMessageHelper.setSubject("testing mail service");
                 MimeBodyPart mimeBodyPart = new MimeBodyPart();
@@ -53,7 +69,7 @@ public class EmailConnectorTest {
     public void sendTemplateMail() {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setSubject("WaveMaker Invites You");
-        message.setTo("sunil.pulugula@wavemaker.com");
+        message.setTo("test@wavemaker.com");
         message.setFrom("wavemaker789@gmail.com");
         Map<String, String> props = new HashMap<>();
         props.put("user", "Mike");
@@ -67,8 +83,8 @@ public class EmailConnectorTest {
     @Test
     public void sendMailWithSimpleMailMessage() {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom("wavemaker.apps@gmail.com");
-        simpleMailMessage.setTo("saraswathi.rekhala@wavemaker.com");
+        simpleMailMessage.setFrom("wavemaker789@gmail.com");
+        simpleMailMessage.setTo("test@wavemaker.com");
         simpleMailMessage.setSubject("testing mail");
         simpleMailMessage.setText("hello world!!!");
         emailConnector.sendSimpleMailMessage(simpleMailMessage);
@@ -81,7 +97,7 @@ public class EmailConnectorTest {
             @Override
             public void prepare(final MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-                mimeMessageHelper.addTo("sunil.pulugula@wavemaker.com");
+                mimeMessageHelper.addTo("test@wavemaker.com");
                 mimeMessageHelper.setFrom("wavemaker789@gmail.com");
                 mimeMessageHelper.setText("hi hello mime message!!!");
                 mimeMessageHelper.setSubject("testing mail service");
@@ -96,7 +112,7 @@ public class EmailConnectorTest {
             @Override
             public void prepare(final MimeMessage mimeMessage) throws Exception {
                 MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-                mimeMessageHelper.addTo("sunil.pulugula@wavemaker.com");
+                mimeMessageHelper.addTo("test@wavemaker.com");
                 mimeMessageHelper.setFrom("wavemaker789@gmail.com");
                 mimeMessageHelper.setSubject("testing mail service");
 

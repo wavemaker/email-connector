@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * @author <a href="mailto:sunil.pulugula@wavemaker.com">Sunil Kumar</a>
@@ -29,47 +30,58 @@ public class EmailProperties {
     @Value("${email.transport.protocol}")
     private String protocol;
 
+    @Value("${email.server.sslenabled}")
+    private boolean sslEnabled;
+
     private Properties javaMailProperties = new Properties();
 
     @PostConstruct
-    public Properties setProperties() {
-        javaMailProperties.setProperty("mail.smtp.auth", "true");
+    private Properties init() {
+        if (StringUtils.isEmpty(username) && StringUtils.isEmpty(password)) {
+            javaMailProperties.setProperty("mail.smtp.auth", "false");
+        } else {
+            javaMailProperties.setProperty("mail.smtp.auth", "true");
+        }
         javaMailProperties.setProperty("mail.smtp.starttls.enable", "false");
         javaMailProperties.setProperty("mail.smtp.quitwait", "false");
-        javaMailProperties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        if (sslEnabled) {
+            javaMailProperties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        }
         javaMailProperties.setProperty("mail.smtp.socketFactory.fallback", "false");
         javaMailProperties.setProperty("mail.debug", "false");
+        javaMailProperties.setProperty("mail.smtp.timeout", "30000");
+        javaMailProperties.setProperty("mail.smtp.connectiontimeout", "30000");
         javaMailProperties.setProperty("mail.transport.protocol", protocol);
         return javaMailProperties;
+    }
+
+    public Properties getProperties() {
+        return javaMailProperties;
+    }
+
+    public void setProperties(Properties properties) {
+        javaMailProperties = properties;
     }
 
     public String getHost() {
         return host;
     }
 
-
     public Integer getPort() {
         return port;
     }
-
 
     public String getUsername() {
         return username;
     }
 
-
     public String getPassword() {
         return password;
     }
 
-
     public EmailProperties addJavaMailProperty(String key, String value) {
         javaMailProperties.setProperty(key, value);
         return this;
-    }
-
-    public Properties getJavaMailProperties() {
-        return javaMailProperties;
     }
 
     public void setJavaMailProperties(Properties javaMailProperties) {

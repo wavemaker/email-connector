@@ -17,21 +17,19 @@ public abstract class AbstractEmailConnector implements EmailConnector {
 
     private EmailTemplateResolver emailTemplateResolver;
 
-
     public JavaMailSender getJavaMailSender() {
         if (mailSender == null) {
             mailSender = new JavaMailSenderImpl();
-            ((JavaMailSenderImpl) mailSender).setHost(getEmailProperties().getHost());
-            ((JavaMailSenderImpl) mailSender).setPort(getEmailProperties().getPort());
-            ((JavaMailSenderImpl) mailSender).setUsername(getEmailProperties().getUsername());
-            ((JavaMailSenderImpl) mailSender).setPassword(getEmailProperties().getPassword());
-            ((JavaMailSenderImpl) mailSender).setJavaMailProperties(getEmailProperties().getJavaMailProperties());
+            ((JavaMailSenderImpl) mailSender).setHost(getAllEmailProperties().getHost());
+            ((JavaMailSenderImpl) mailSender).setPort(getAllEmailProperties().getPort());
+            ((JavaMailSenderImpl) mailSender).setUsername(getAllEmailProperties().getUsername());
+            ((JavaMailSenderImpl) mailSender).setPassword(getAllEmailProperties().getPassword());
+            ((JavaMailSenderImpl) mailSender).setJavaMailProperties(getAllEmailProperties().getProperties());
         }
         return mailSender;
     }
 
-    protected abstract EmailProperties getEmailProperties();
-
+    protected abstract EmailProperties getAllEmailProperties();
 
     public EmailTemplateResolver getEmailTemplateResolver() {
         if (emailTemplateResolver == null) {
