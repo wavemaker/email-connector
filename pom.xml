@@ -18,7 +18,7 @@
     <name>emailconnector</name>
 
     <properties>
-        <wavemaker-version>10.5.3.9077</wavemaker-version>
+        <wavemaker-version>10.8.0</wavemaker-version>
     </properties>
 
 
@@ -83,6 +83,15 @@
                 </configuration>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.wavemaker.connector.build</groupId>
+                    <artifactId>wavemaker-connector-build-maven-plugin</artifactId>
+                    <version>${wavemaker-version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <repositories>
