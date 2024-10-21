@@ -3,7 +3,7 @@ package com.wavemaker.connector.email;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
