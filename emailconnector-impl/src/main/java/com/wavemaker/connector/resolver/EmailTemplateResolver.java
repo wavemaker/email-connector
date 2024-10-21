@@ -1,5 +1,8 @@
 package com.wavemaker.connector.resolver;
 
+import com.wavemaker.connector.exception.EmailTemplateNotFoundException;
+import org.apache.commons.io.IOUtils;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,10 +10,6 @@ import java.net.URL;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.io.IOUtils;
-
-import com.wavemaker.connector.exception.EmailTemplateNotFoundException;
 
 /**
  * @author <a href="mailto:sunil.pulugula@wavemaker.com">Sunil Kumar</a>
@@ -20,7 +19,7 @@ public class EmailTemplateResolver {
 
     private static Pattern pattern = Pattern.compile("@[a-z A-Z0-9]*@");
 
-    public String replacePlaceHolders(String templateName, Map<String, String> props) {
+    public String replacePlaceHolders(String templateName, Map<String, String> props) throws EmailTemplateNotFoundException {
         String templateText = readFile(templateName);
         String replacedText = templateText;
         Matcher matcher = pattern.matcher(replacedText);
@@ -35,7 +34,7 @@ public class EmailTemplateResolver {
 
     }
 
-    private String readFile(String fileName) {
+    private String readFile(String fileName) throws EmailTemplateNotFoundException {
         URL classPathResource = getClassPathResource(fileName);
         try {
             return IOUtils.toString(new BufferedReader(new FileReader(classPathResource.getFile())));
@@ -44,11 +43,11 @@ public class EmailTemplateResolver {
         }
     }
 
-    private URL getClassPathResource(String templateName) {
+    private URL getClassPathResource(String templateName) throws EmailTemplateNotFoundException {
         ClassLoader classLoader = getClass().getClassLoader();
         URL resource = classLoader.getResource(templateName);
         if (resource == null) {
-            new EmailTemplateNotFoundException("Template not found in the class path");
+            throw new EmailTemplateNotFoundException("Template not found in the class path");
         }
         return resource;
     }
